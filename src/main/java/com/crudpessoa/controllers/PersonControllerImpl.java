@@ -10,7 +10,6 @@ import io.micronaut.scheduling.annotation.ExecuteOn;
 import javax.validation.Valid;
 import java.util.List;
 
-
 @ExecuteOn(TaskExecutors.IO)
 @Controller("/person")
 public class PersonControllerImpl implements PersonController {
