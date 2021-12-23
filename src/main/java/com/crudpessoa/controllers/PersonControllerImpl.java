@@ -24,9 +24,16 @@ public class PersonControllerImpl implements PersonController {
     public Person show(Long id) {
         return personService.showPerson(id);
     }
-
+/*
     @Override
     public List<Person> list() {
+        return personService.listPerson();
+    }
+*/
+    @Override
+    public List<Person> list() {
+        List<Person> listperson = personService.listPerson();
+        System.out.println("Tamanho lista de pessoas: " + listperson.size());
         return personService.listPerson();
     }
 
