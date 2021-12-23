@@ -19,23 +19,10 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 @MicronautTest
 class TestComponentSpec extends BaseSetup {
 
-    @AutoCleanup
-    @Shared
-    EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
-
-    @AutoCleanup
-    @Shared
-    ApplicationContext applicationContext = embeddedServer.applicationContext
-
-    @AutoCleanup
-    @Shared
-    HttpClient httpClient = applicationContext.createBean(HttpClient, embeddedServer.URL)
-
-    BlockingHttpClient getClient() { httpClient.toBlocking() }
 
     void "retorna status OK quando existem pessoas cadastradas"() {
         given:
-        HttpRequest request = HttpRequest.GET ("/person/")
+        HttpRequest request = HttpRequest.GET ("/person/2")
         when:
         HttpResponse response = client.exchange(request)
         then:
@@ -71,21 +58,21 @@ class TestComponentSpec extends BaseSetup {
 //        error.getResponse().code() == HttpStatus.NOT_FOUND.code
 //
 //    }
-//      void "retorna CREAT quando dados para cadastro são válidos"() {
-//          Person person = new Person()
-//          person.setName("Tais")
-//          person.setAge(23)
-//          person.setCpf("09922236605")
-//
-//          given:
-//          HttpRequest request = HttpRequest.POST("/person/", person)
-//          when:
-//          HttpResponse response = client.exchange(request)
-//          then:
-//          assertThat(response.status()).isEqualTo(HttpStatus.CREATED)
-//
-//      }
-//
+      void "retorna CREAT quando dados para cadastro são válidos"() {
+          Person person = new Person()
+          person.setName("Tais")
+          person.setAge(23)
+          person.setCpf("09922236605")
+
+          given:
+          HttpRequest request = HttpRequest.POST("/person/", person)
+          when:
+          HttpResponse response = client.exchange(request)
+          then:
+          assertThat(response.status()).isEqualTo(HttpStatus.CREATED)
+
+      }
+
 ////      void "retorna BAD REQUEST quando dados para cadastro são inválidos"() {
 //        Person person = new Person()
 //        person.setName("Tais")
