@@ -1,1 +1,1 @@
-web: mvn exec:exec
+mvn exec:exec
