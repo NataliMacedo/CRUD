@@ -46,10 +46,19 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     @Override
     @TransactionalAdvice
-    public Person save(@NotBlank String name, @NotNull int age, String CPF) {
-        if (validateCPF.isCpf(CPF)) {
-            String cpf = CPF.replaceAll("[./-]", "");
-            Person pessoa = new Person(name, age, CPF);
+    public Person save(@NotBlank String name, @NotNull int age, String cpf) {
+        if (validateCPF.isCpf(cpf)) {
+            List<Person> pessoas = findAll();
+            int tam = pessoas.size();
+            String cpf2 = cpf.replaceAll("[./-]", "");
+            for(int i=0; i<tam; i++){
+                Person person = pessoas.get(i);
+                String pcpf = person.getCpf();
+                if(pcpf.equals(cpf2)){
+                    return null;
+                }
+            }
+            Person pessoa = new Person(name, age, cpf2);
             entityManager.persist(pessoa);
             return pessoa;
         }
@@ -74,7 +83,17 @@ public class PersonRepositoryImpl implements PersonRepository {
     @TransactionalAdvice
     public int update(Long id, @NotBlank String name, @NotNull int age, @NotNull String CPF) {
         if (validateCPF.isCpf(CPF)) {
+            List<Person> pessoas = findAll();
+            int tam = pessoas.size();
             String cpf = CPF.replaceAll("[./-]", "");
+            for(int i=0; i<tam; i++){
+                Person person = pessoas.get(i);
+                String pcpf = person.getCpf();
+                if(pcpf.equals(cpf)){
+                    return 0;
+                }
+            }
+            //String cpf = CPF.replaceAll("[./-]", "");
             return entityManager.createQuery("UPDATE Person p SET name = :name, age =: age, cpf =: cpf where id = :id")
                     .setParameter("name", name)
                     .setParameter("id", id)

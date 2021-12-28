@@ -37,7 +37,7 @@ public class PersonService {
                     Person pessoacpf = new Person(person.getName(), person.getAge(), cpf);
                     return HttpResponse.ok(pessoacpf);
                 }
-                return HttpResponse.badRequest("O cpf informado é inválido");
+                return HttpResponse.badRequest("O cpf informado é inválido ou já se encontra cadastrado.");
             }
             return HttpResponse.notFound();
         }
@@ -47,7 +47,7 @@ public class PersonService {
     public HttpResponse savePerson(@Body @Valid Person person) {
         Person newPerson = personRepository.save(person.getName(), person.getAge(), person.getCpf());
         if (newPerson == null) {
-            return HttpResponse.badRequest("O cpf informado é inválido.");
+            return HttpResponse.badRequest("O cpf informado é inválido ou já se encontra cadastrado.");
         } else return HttpResponse.created(newPerson);
     }
 
