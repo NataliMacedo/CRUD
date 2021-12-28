@@ -1,1 +1,1 @@
-web: java -Dserver.port=${PORT} -jar build/libs/crud-pessoa-maven-*.jar
+web: java -Dserver.port=${PORT} -jar target/crud-pessoa-maven-*.jar
