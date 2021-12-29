@@ -1,8 +1,13 @@
 package com.crudpessoa.validations;
 
+import com.crudpessoa.controllers.PersonController;
+import com.crudpessoa.entities.Person;
+import com.crudpessoa.repositories.PersonRepository;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 import java.util.InputMismatchException;
+import java.util.List;
 
 @Singleton
 
@@ -55,6 +60,17 @@ public class ValidateCPF {
         } catch (InputMismatchException erro) {
             return (false);
         }
+    }
+
+    public boolean  doublecpf (String cpf , List<Person> pessoas ){
+        int tam = pessoas.size();
+        for(int i=0; i<tam; i++) {
+            Person person = pessoas.get(i);
+            String pcpf = person.getCpf();
+            if (pcpf.equals(cpf)) {
+                return true;
+            }
+        } return false;
     }
 }
 

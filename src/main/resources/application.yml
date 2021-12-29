@@ -1,15 +1,16 @@
 micronaut:
   server:
-    port: ${PORT:8090}
+    port: ${PORT:8080}
   application:
     name: crudPessoaMaven
 
 datasources:
   default:
-    url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE`}
-    username: ${JDBC_USER:sa}
-    password: ${JDBC_PASSWORD:""}
-    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+    url: ${JDBC_URL}
+    username: ${JDBC_USER}
+    password: ${JDBC_PASSWORD}
+    driverClassName: org.postgresql.Driver
+    dialect: POSTGRES
 
 jpa:
   default:
@@ -18,3 +19,19 @@ jpa:
         hbm2ddl:
           auto: update
         show_sql: true
+        format_sql: true
+
+#datasources:
+#  default:
+#    url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE`}
+#    username: ${JDBC_USER:sa}
+#    password: ${JDBC_PASSWORD:""}
+#    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+#
+#jpa:
+#  default:
+#    properties:
+#      hibernate:
+#        hbm2ddl:
+#          auto: update
+#        show_sql: true

@@ -4,6 +4,7 @@ import com.crudpessoa.entities.Person;
 import com.crudpessoa.validations.ValidateCPF;
 import io.micronaut.transaction.annotation.ReadOnly;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 import javax.persistence.EntityManager;
@@ -17,15 +18,17 @@ import java.util.Optional;
 @Singleton
 public class PersonRepositoryImpl implements PersonRepository {
 
+    @Inject
     public EntityManager entityManager;
 
+    @Inject
     public ValidateCPF validateCPF;
 
-    public PersonRepositoryImpl(EntityManager entityManager,
-                                ValidateCPF validateCPF) {
-        this.entityManager = entityManager;
-        this.validateCPF = validateCPF;
-    }
+//    public PersonRepositoryImpl(EntityManager entityManager,
+//                                ValidateCPF validateCPF) {
+//        this.entityManager = entityManager;
+//        this.validateCPF = validateCPF;
+//    }
 
     @Override
     @ReadOnly
@@ -43,24 +46,20 @@ public class PersonRepositoryImpl implements PersonRepository {
         return query.getResultList();
     }
 
-
     @Override
     @TransactionalAdvice
     public Person save(@NotBlank String name, @NotNull int age, String cpf) {
         if (validateCPF.isCpf(cpf)) {
             List<Person> pessoas = findAll();
-            int tam = pessoas.size();
             String cpf2 = cpf.replaceAll("[./-]", "");
-            for(int i=0; i<tam; i++){
-                Person person = pessoas.get(i);
-                String pcpf = person.getCpf();
-                if(pcpf.equals(cpf2)){
-                    return null;
-                }
+            if (validateCPF.doublecpf(cpf2, pessoas)) {
+                return null;
             }
-            Person pessoa = new Person(name, age, cpf2);
-            entityManager.persist(pessoa);
-            return pessoa;
+            else{
+                Person pessoa = new Person(name, age, cpf2);
+                entityManager.persist(pessoa);
+                return pessoa;
+            }
         }
         return null;
     }
@@ -68,7 +67,6 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     @Override
     @TransactionalAdvice
-
     public boolean deleteById(@NotNull Long id) {
         if (findById(id).isPresent()) {
             Person person = entityManager.find(Person.class, id);
@@ -83,22 +81,11 @@ public class PersonRepositoryImpl implements PersonRepository {
     @TransactionalAdvice
     public int update(Long id, @NotBlank String name, @NotNull int age, @NotNull String CPF) {
         if (validateCPF.isCpf(CPF)) {
-            List<Person> pessoas = findAll();
-            int tam = pessoas.size();
-            String cpf = CPF.replaceAll("[./-]", "");
-            for(int i=0; i<tam; i++){
-                Person person = pessoas.get(i);
-                String pcpf = person.getCpf();
-                if(pcpf.equals(cpf)){
-                    return 0;
-                }
-            }
-            //String cpf = CPF.replaceAll("[./-]", "");
             return entityManager.createQuery("UPDATE Person p SET name = :name, age =: age, cpf =: cpf where id = :id")
                     .setParameter("name", name)
                     .setParameter("id", id)
                     .setParameter("age", age)
-                    .setParameter("cpf", cpf)
+                    .setParameter("cpf", CPF)
                     .executeUpdate();
         }
         return 0;
