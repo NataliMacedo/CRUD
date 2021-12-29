@@ -1,30 +1,13 @@
 package groovy.mock
 
-import com.crudpessoa.entities.Person
-import io.micronaut.context.annotation.Primary
-import io.micronaut.context.annotation.Requires
-import io.micronaut.context.env.Environment
 
-import javax.persistence.EntityGraph
-import javax.persistence.EntityManager
-import javax.persistence.EntityManagerFactory
-import javax.persistence.EntityTransaction
-import javax.persistence.FlushModeType
-import javax.persistence.LockModeType
-import javax.persistence.Query
-import javax.persistence.StoredProcedureQuery
-import javax.persistence.TypedQuery
+import javax.persistence.*
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaDelete
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.metamodel.Metamodel
-import static org.mockito.Mockito.mock
 
-
-@Primary
-@Singleton
-@Requires(property = "mockEntityManager", value = "true")
 class MockEntityManager implements EntityManager {
 
     @Override

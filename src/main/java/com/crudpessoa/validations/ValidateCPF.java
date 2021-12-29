@@ -1,11 +1,10 @@
 package com.crudpessoa.validations;
 
-import jakarta.inject.Singleton;
+import javax.inject.Singleton;
 
 import java.util.InputMismatchException;
 
 @Singleton
-
 public class ValidateCPF {
 
     public boolean isCpf(String CPF) {

@@ -4,11 +4,10 @@ import com.crudpessoa.entities.Person;
 import com.crudpessoa.validations.ValidateCPF;
 import io.micronaut.transaction.annotation.ReadOnly;
 import io.micronaut.transaction.annotation.TransactionalAdvice;
-import jakarta.inject.Singleton;
 
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -17,12 +16,11 @@ import java.util.Optional;
 @Singleton
 public class PersonRepositoryImpl implements PersonRepository {
 
-    public EntityManager entityManager;
+    private EntityManager entityManager;
 
     public ValidateCPF validateCPF;
 
-    public PersonRepositoryImpl(EntityManager entityManager,
-                                ValidateCPF validateCPF) {
+    public PersonRepositoryImpl(EntityManager entityManager, ValidateCPF validateCPF) {
         this.entityManager = entityManager;
         this.validateCPF = validateCPF;
     }
@@ -59,7 +57,6 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     @Override
     @TransactionalAdvice
-
     public boolean deleteById(@NotNull Long id) {
         if (findById(id).isPresent()) {
             Person person = entityManager.find(Person.class, id);

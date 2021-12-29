@@ -4,7 +4,7 @@ import com.crudpessoa.entities.Person;
 import com.crudpessoa.repositories.PersonRepository;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
-import jakarta.inject.Singleton;
+import javax.inject.Singleton;
 
 import javax.validation.Valid;
 import java.util.List;
