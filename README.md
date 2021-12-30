@@ -1,8 +1,6 @@
 ## Documentação
 
-- Introdução
-
-Bem vindo! Esta documentação deve ajudá-lo a se familiarizar com os recursos disponíveis na API CRUD, que tem por objetivo realizar o cadastro de pessoas.
+Bem vindo! Esta documentação deve ajudá-lo a se familiarizar com os recursos disponíveis na API CRUD, que tem por objetivo realizar o cadastro de pessoas. Ela foi desenvolvida em Java, utilizando Micronaut e Maven.
 
 ## Recursos
 
@@ -33,3 +31,4 @@ Atributos:
     -   age:  do tipo int, é obrigatório ser informado no cadastro com valor acima de 0.
     -   cpf:  do tipo String, é obrigatório ser informado de maneira única tanto no momento do cadastro quanto na atualização.
 
+Mais informações podem ser consultadas no arquivo: swagger.json.

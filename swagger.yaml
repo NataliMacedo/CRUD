@@ -1,0 +1,170 @@
+swagger: "2.0"
+info:
+  description: "API desenvolvida em Java utilizando Micronaut e Maven. Tem por objetivo realizar o cadastro de pessoas."
+  version: "2.0"
+  title: "Swagger API CRUD"
+  
+host: "crudpessoaqa.herokuapp.com"
+basePath: "/person"
+tags:
+- name: "CRUD" 
+  description: "API de cadastro de pessoas"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+
+schemes:
+- "https"
+- "http"
+paths:
+  /person:
+    post:
+      tags:
+      - "CRUD"
+      summary: "Realiza o cadastro de uma pessoa"
+      description: "Realiza o cadastro de uma pessoa, quando os dados informados no momento do cadastro são válidos."
+      operationId: "addPerson"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Dados da pessoa a ser cadastrada"
+        required: true
+        schema:
+          $ref: "#/definitions/Person"
+      responses:
+        "201":
+          description: "Created - quando dados informados são válidos e pessoa é cadastrada."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Person"
+        "404":
+          description: "Bad Request - quando os dados não são informados ou são inválidos e a pessoa não é cadastrada."
+        "400":
+          description: "Invalid JSON - quando os dados do Json informados estão despadronizados."
+          
+    get:
+      tags:
+        - "CRUD"
+      summary: "Lista pessoas cadastradas"
+      description: "Exibe uma lista com os dados das pessoas cadastradas ou uma lista vazia quando nenhuma pessoa foi cadastrada."
+      operationId: "findListPerson"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "OK - exibe lista com pessoas cadastradas ou vazia caso nenhuma pessoa tenha sido cadastrada."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Person"
+
+  /person/{id}:   
+    put:
+      tags:
+      - "CRUD"
+      summary: "Atualiza dados de pessoa já cadastrada"
+      description: ""
+      operationId: "updatePerson"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        type: "integer"
+        description: "Id da pessoa a ser atualizada."
+        required: true
+      - in: "body"
+        name: "body"
+        description: "Dados da pessoa a serem atualizados."
+        required: true
+        schema:
+          $ref: "#/definitions/Person"
+      responses:
+        "200":
+          description: "OK - quando os dados informados são válidos e a atualização é efetivada."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Person"
+        "404":
+          description: "Not found - quando id informado é inválido (não existe pessoa com o id informado ou id do path é diferente do id do body)."
+        "400":
+          description: "Bad Request - quando dados informados são inválidos(cpf já cadastrado ou dados faltantes)."
+    
+    get:
+      tags:
+        - "CRUD"
+      summary: "Exibe pessoa de id informado"
+      description: "Exibe dados da pessoa de id informado."
+      operationId: "findPersonById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        type: "string"
+        in: "path"
+        description: "Id da pessoa informada."
+        required: true
+      responses:
+        "200":
+          description: "OK - quando id informado é válido."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Person"
+        "404":
+          description: "Not Found - quando id é inválido."
+      
+    delete:
+      tags:
+      - "CRUD"
+      summary: "Exclui pessoa de id informado."
+      description: ""
+      operationId: "deletePersonById"
+      parameters:
+      - name: "id"
+        type: "integer"
+        in: "path" 
+        description: "Id da pessoa informada."
+        required: true
+      responses:
+        "204":
+          description: "No Content - quando id é válido e pessoa é excluída."
+        "404":
+          description: "Not found - quando id inválido."
+      
+      
+
+definitions:
+  Person:
+    type: "object"
+    required:
+    - "name"
+    - "age"
+    - "cpf"
+    - "id"
+    properties:
+      id:
+        type: "integer"
+        description: "Gerado automaticamente, é único para cada cadastro."
+      name:
+        type: "string"
+        description: "Deve ser informado no cadastro e atualização, é de preenchimento obrigatório."
+      age:
+        type: "integer"
+        description: "Deve ser informada no cadastro e atualização, seu valor deve ser maior que zero."
+      cpf:
+        type: "string"
+        description: "Deve ser informado no cadastro e atualização, seu valor não pode ser informado a mais de uma pessoa."
+
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
