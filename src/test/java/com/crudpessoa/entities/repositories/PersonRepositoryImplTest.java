@@ -107,22 +107,22 @@ class PersonRepositoryImplTest {
 
     }
 
-//    @Test
-//    void shouldCreatPersonWhenPersonValid() {
-//
-//        when(validateCPF.isCpf("VALID_CPF")).thenReturn(true);
-//
-//        Person response = sut.save("Natali", 30, "VALID_CPF");
-//
-//        assertNotNull(response);
-//        assertEquals("Natali", response.getName());
-//        assertEquals(30, response.getAge());
-//        assertEquals("VALID_CPF", response.getCpf());
-//
-//        verify(validateCPF, times(1)).isCpf("VALID_CPF");
-//        verify(entityManager, times(1)).persist(response);
-//
-//    }
+    @Test
+    void shouldCreatPersonWhenPersonValid() {
+
+        when(validateCPF.isCpf("VALID_CPF")).thenReturn(true);
+
+        Person response = sut.save("Natali", 30, "VALID_CPF");
+
+        assertNotNull(response);
+        assertEquals("Natali", response.getName());
+        assertEquals(30, response.getAge());
+        assertEquals("VALID_CPF", response.getCpf());
+
+        verify(validateCPF, times(1)).isCpf("VALID_CPF");
+        verify(entityManager, times(1)).persist(response);
+
+    }
 
     @Test
     void shouldReturnNullWhenPersonInvalid() {

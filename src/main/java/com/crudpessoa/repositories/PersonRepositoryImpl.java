@@ -24,11 +24,6 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Inject
     public ValidateCPF validateCPF;
 
-//    public PersonRepositoryImpl(EntityManager entityManager,
-//                                ValidateCPF validateCPF) {
-//        this.entityManager = entityManager;
-//        this.validateCPF = validateCPF;
-//    }
 
     @Override
     @ReadOnly
@@ -81,11 +76,24 @@ public class PersonRepositoryImpl implements PersonRepository {
     @TransactionalAdvice
     public int update(Long id, @NotBlank String name, @NotNull int age, @NotNull String CPF) {
         if (validateCPF.isCpf(CPF)) {
+            List<Person> pessoas = findAll();
+            int tam = pessoas.size();
+            String cpf2 = CPF.replaceAll("[./-]", "");
+            for(int i=0; i<tam; i++) {
+               Person person = pessoas.get(i);
+               String pcpf = person.getCpf();
+               Long pid = person.getId();
+               if (pcpf.equals(cpf2)) {
+                   if(pid != id){
+                       return 0;
+                   }
+               }
+            }
             return entityManager.createQuery("UPDATE Person p SET name = :name, age =: age, cpf =: cpf where id = :id")
                     .setParameter("name", name)
                     .setParameter("id", id)
                     .setParameter("age", age)
-                    .setParameter("cpf", CPF)
+                    .setParameter("cpf", cpf2)
                     .executeUpdate();
         }
         return 0;

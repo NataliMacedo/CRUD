@@ -44,6 +44,22 @@ public class PersonService {
         return HttpResponse.notFound().body("O id informado no body não corresponde ao id informado na url.");
     }
 
+//    public HttpResponse updatePerson(Long id, @Body @Valid Person person) {
+//        if (id == person.getId()) {
+//            if (personRepository.findById(id).isPresent()) {
+//                String cpf = person.getCpf().replaceAll("[./-]", "");
+//                int validcpf = personRepository.update(person.getId(), person.getName(), person.getAge(), cpf);
+//                if (validcpf > 0) {
+//                    Person pessoacpf = new Person(person.getName(), person.getAge(), cpf);
+//                    return HttpResponse.ok(pessoacpf);
+//                }
+//                return HttpResponse.badRequest("O cpf informado é inválido ou já se encontra cadastrado.");
+//            }
+//            return HttpResponse.notFound();
+//        }
+//        return HttpResponse.notFound().body("O id informado no body não corresponde ao id informado na url.");
+//    }
+
     public HttpResponse savePerson(@Body @Valid Person person) {
         Person newPerson = personRepository.save(person.getName(), person.getAge(), person.getCpf());
         if (newPerson == null) {
