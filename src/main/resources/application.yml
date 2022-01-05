@@ -1,6 +1,25 @@
 micronaut:
   server:
     port: ${PORT:8080}
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowCredentials: true
+          allowedMethods:
+            - OPTIONS
+            - POST
+            - PUT
+            - GET
+          exposedHeaders:
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
+            - Access-Control-Request-Method
+            - Access-Control-Request-Headers
+            - Origin
+            - Cache-Control
+            - Content-Type
+            - Authorization
   application:
     name: crudPessoaMaven
 
