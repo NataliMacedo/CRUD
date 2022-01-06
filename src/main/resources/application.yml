@@ -11,6 +11,7 @@ micronaut:
             - POST
             - PUT
             - GET
+            - DELETE
           exposedHeaders:
             - Access-Control-Allow-Origin
             - Access-Control-Allow-Headers
