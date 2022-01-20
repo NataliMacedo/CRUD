@@ -107,29 +107,32 @@ class PersonRepositoryImplTest {
 
     }
 
-//    @Test
-//    void shouldCreatPersonWhenPersonValid() {
-//
-//        List<Person> listPerson = new ArrayList<>();
-//        listPerson.add(new Person("Natali", 45, "VALID_CPF"));
-//        listPerson.add(new Person("Paulo", 22, "VALID_CPF"));
-//
-//
-//        when(validateCPF.isCpf("09922236605")).thenReturn(true);
-//        when(validateCPF.doublecpf(eq("09922236605"), any())).thenReturn(false);
-//
-//        Person response = sut.save("Pedro", 30, "09922236605");
-//
-//        assertNotNull(response);
-//        assertEquals("Pedro", response.getName());
-//        assertEquals(30, response.getAge());
-//        assertEquals("09922236605", response.getCpf());
-//
-//        verify(validateCPF, times(1)).isCpf("09922236605");
-//        verify(validateCPF, times(1)).doublecpf("09922236605", listPerson);
-//        verify(entityManager, times(1)).persist(response);
-//
-//    }
+    @Test
+    void shouldCreatPersonWhenPersonValid() {
+
+        List<Person> listPerson = new ArrayList<>();
+        listPerson.add(new Person("Natali", 45, "VALID_CPF"));
+        listPerson.add(new Person("Paulo", 22, "VALID_CPF"));
+
+        TypedQuery<Person> typedQuery = mock(TypedQuery.class);
+
+        when(validateCPF.isCpf("09922236605")).thenReturn(true);
+        when(validateCPF.doublecpf(eq("09922236605"), any())).thenReturn(false);
+        doReturn(typedQuery).when(entityManager).createQuery(anyString(), any());
+        when(typedQuery.getResultList()).thenReturn(listPerson);
+
+        Person response = sut.save("Pedro", 30, "09922236605");
+
+        assertNotNull(response);
+        assertEquals("Pedro", response.getName());
+        assertEquals(30, response.getAge());
+        assertEquals("09922236605", response.getCpf());
+
+        verify(validateCPF, times(1)).isCpf("09922236605");
+        verify(validateCPF, times(1)).doublecpf("09922236605", listPerson);
+        verify(entityManager, times(1)).persist(response);
+
+    }
 
     @Test
     void shouldReturnNullWhenPersonInvalid() {
@@ -159,6 +162,7 @@ class PersonRepositoryImplTest {
 
         verify(entityManager, times(3)).find(Person.class, id);
         verify(entityManager, times(1)).remove(personResponse);
+
     }
 
     @Test
@@ -179,30 +183,32 @@ class PersonRepositoryImplTest {
 
     }
 
-//    @Test
-//    void shouldReturn1WhenUpdatePerson() {clear
-//
-//        Long id = 15L;
-//        Query query = mock(Query.class);
-//
-//        List<Person> listPerson = new ArrayList<>();
-//        listPerson.add(new Person("Natali", 45, "VALID_CPF"));
-//        listPerson.add(new Person("Paulo", 22, "VALID_CPF"));
-//
-//        when(validateCPF.isCpf("VALID_CPF")).thenReturn(true);
-//        when(entityManager.createQuery(any(String.class))).thenReturn(query);
-//        when(query.setParameter(any(String.class), any())).thenReturn(query);
-//        when(query.executeUpdate()).thenReturn(1);
-//        when(sut.findAll()).thenReturn(listPerson);
-//
-//        int response = sut.update(id, "Natali", 30, "VALID_CPF");
-//        assertNotNull(response);
-//        assertEquals(1, response);
-//
-//        verify(validateCPF, times(1)).isCpf("VALID_CPF");
-//        verify(entityManager, times(1)).createQuery(any(String.class));
-//
-//    }
+    @Test
+    void shouldReturn1WhenUpdatePerson() {
+
+        Long id = 15L;
+        List<Person> listPerson = new ArrayList<>();
+        listPerson.add(new Person("Natali", 45, "006.996.000-30"));
+        listPerson.add(new Person("Paulo", 22, "100.283.880-03"));
+
+        TypedQuery<Person> typedQuery = mock(TypedQuery.class);
+        Query query = mock(Query.class);
+
+        when(validateCPF.isCpf("09922236605")).thenReturn(true);
+        doReturn(typedQuery).when(entityManager).createQuery(anyString(), any());
+        when(typedQuery.getResultList()).thenReturn(listPerson);
+        doReturn(query).when(entityManager).createQuery(any(String.class));
+        when(query.setParameter(any(String.class), any())).thenReturn(query);
+        when(query.executeUpdate()).thenReturn(1);
+
+        int response = sut.update(id, "Natali", 30, "09922236605");
+        assertNotNull(response);
+        assertEquals(1, response);
+
+        verify(validateCPF, times(1)).isCpf("09922236605");
+        verify(entityManager, times(1)).createQuery(any(String.class));
+
+    }
 
     @Test
     void shouldReturn0WhenUpdatePerson() {
